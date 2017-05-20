@@ -12,18 +12,28 @@ root.addHandler(lhandler)
 
 class CoreNLP:
     root.debug('Object instantiating..')
-    annotator_full_list = ["tokenize", "cleanxml", "ssplit", "pos", 
-    "lemma", "ner", "regexner", "truecase", "parse", "depparse", "dcoref", 
-    "relation", "natlog", "quote"]
+    annotator_full_list = [
+        'tokenize',
+        'cleanxml',
+        'ssplit',
+        'pos', 
+        'lemma',
+        'ner',
+        'regexner',
+        'truecase', 
+        'parse',
+        'depparse',
+        'dcoref',
+        'relation',
+        'natlog',
+        'quote',
+        'sentiment']
     url = 'http://127.0.0.1:9000'
     out_format = 'json'
 
     def __init__(self, url=url, annotator_list=annotator_full_list):        
         assert url.upper().startswith('HTTP'), \
             'url string should be prefixed with http'
-        if 'SENTIMENT' in map(str.upper, annotator_list):
-            root.warning('You are using "Sentiment" annotator which is'\
-                'not supported by Old version of CoreNLP')
             
         if url.endswith('/'):
             self.url = url[:-1]
@@ -48,7 +58,7 @@ class CoreNLP:
         root.debug('server connection: ' + current_url)
         try:
             server_out = requests.post(current_url, 
-                                        data, 
+                                        data.encode('utf-8'), 
                                         headers={'Connection': 'close'})
         except requests.exceptions.ConnectionError:
             root.error('Connection Error, check you have server running')
